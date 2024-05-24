@@ -1,12 +1,9 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
-#define TIME_STEP 100
-#define TIME_INTERVAL 1500
-
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow),
-      x(1.0), y(0.0), step(0.01), currentIndex(0)
+      x(1.0), y(0.0), t_step(0.01), currentIndex(0)
 //       active(false)
 {
     ui->setupUi(this);
@@ -103,16 +100,15 @@ void MainWindow::updateGraphs() // Новая функция
 {
     rect->p4->setVisible(false);
     rect->p5->setVisible(false);
-    solv->eulerMethod(x, y, rect->angle, step);
+    solv->eulerMethod(x, y, rect->angle, t_step);
     rect->update_rectangle();
     /*rect->p1->setPos(x,y);
     rect->p2->setPos(x,y);
     rect->p3->setPos(x,y);*/
     ui->label_2->setText(QString::number(90-rect->angle)+" "+QString::number(3.14/180*(90-rect->angle)));
-
     xData.push_back(x);
     yData.push_back(y);
-    tData.push_back(currentIndex * step);
+    tData.push_back(currentIndex * t_step);
     currentIndex++;
 
     ui->customPlot->graph(0)->addData(tData.last(), xData.last());
@@ -128,7 +124,7 @@ void MainWindow::updateGraphs() // Новая функция
 
     ui->label->setText(QString::number((double)time/1000)+" sec");
 
-    time += TIME_STEP;
+    time += t_step;
 }
 
 void MainWindow::onCheckboxStateChanged(int state)

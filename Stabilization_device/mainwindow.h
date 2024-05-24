@@ -8,6 +8,8 @@
 #include "Rectangle.h"
 #include "solver_sde.h"
 
+#define TIME_STEP 100
+
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
@@ -29,14 +31,13 @@ protected:
 private:
     Ui::MainWindow *ui;
     QTimer *timer;
-    int time, time_moment;
-    bool active;
+    int time;
     QCheckBox *checkbox; // Запуск и остановка таймера
 
     QVector<double> xData,yData,tData;
     QCustomPlot *phasePlot;
     double x,y;
-    double step;
+    double t_step;
     int currentIndex;
 
     void initGraphs();
